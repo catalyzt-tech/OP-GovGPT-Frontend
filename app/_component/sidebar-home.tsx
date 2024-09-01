@@ -1,7 +1,6 @@
 "use client"
-import Sidebar, { items } from "@/components/sidebar";
 import { Icon } from "@iconify/react";
-import { Avatar, Button, Modal, ModalBody, ModalContent, ScrollShadow, Spacer, useDisclosure } from "@nextui-org/react";
+import { Button, Modal, ModalBody, ModalContent, ScrollShadow, Spacer, useDisclosure } from "@nextui-org/react";
 import Link from "next/link";
 
 export default function SidebarHome({
@@ -36,6 +35,12 @@ export default function SidebarHome({
   ]
 
   chatHistory = [...chatHistory, ...chatHistory, ...chatHistory, ...chatHistory, ...chatHistory, ...chatHistory]
+
+
+  const handleNewChat = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    event.preventDefault(); 
+    window.location.reload();
+  };
 
   return (
 
@@ -90,21 +95,22 @@ export default function SidebarHome({
                   },
               */}
                
-              <Link 
-              href={"/"}
-              className="flex justify-between items-center gap-3 p-2 bg-default-100 hover:bg-default-200 rounded-md"
+               <Link
+                href="/"
+                className="flex justify-between items-center gap-3 p-2 bg-default-100 hover:bg-default-200 rounded-md"
+                onClick={handleNewChat}
               >
-                  <div className="flex gap-2 text-default-700">
-                    <Icon icon={"solar:pen-new-round-linear"} width={24} />
-                    <h6 className=" font-normal">New chat</h6>
-                  </div>
-                  <Icon className="" icon="solar:add-circle-line-duotone" width={24} />
+                <div className="flex gap-2 text-default-700">
+                  <Icon icon={"solar:pen-new-round-linear"} width={24} />
+                  <h6 className="font-normal">New chat</h6>
+                </div>
+                <Icon className="" icon="solar:add-circle-line-duotone" width={24} />
               </Link>
 
               <Spacer y={8} />
               <div className="flex flex-col gap-2">
                 <h6 className="text-default-500 text-lg">Recently chat</h6>
-                {chatHistory.map((item, i) => (
+                {chatHistory.length === 0 ? chatHistory.map((item, i) => (
                   <Link 
                   href={"/"} 
                   className="flex items-center gap-1 text-default-700 hover:text-default-800 hover:underline" 
@@ -115,7 +121,9 @@ export default function SidebarHome({
                       {item.question}
                       </p>
                   </Link>
-                ))}
+                )):
+                <h6 className="text-default-400 text-base">No chat history</h6>
+                }
               </div>
 
               <ScrollShadow className="-mr-6 h-full max-h-full py-6 pr-6">

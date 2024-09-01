@@ -1,7 +1,15 @@
 import MessageCard from "@/components/messaga-card";
 import React from "react";
+import { MessageType } from "../Cpage";
+import { Skeleton } from "@nextui-org/react";
 
 
+
+type ConversationType = {
+    prompt: string
+    messages: Array<MessageType>
+    isLoading: boolean
+}
 
 export const assistantMessages = [
     <div key="1">
@@ -58,36 +66,40 @@ export const assistantMessages = [
     </div>,
   ];
   
-  export const userMessages = [
-    "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter.",
-    "I didn't like the suggestions. Can you give me some more?",
-  ];
+export const userMessages = [
+"What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter.",
+"I didn't like the suggestions. Can you give me some more?",
+];
 
-export default function Conversation() {
-  const messages: Array<{
-    role: "user" | "assistant";
-    message: React.ReactNode;
-    status?: "success" | "failed";
-  }> = [
-    {
-      role: "user",
-      message: userMessages[0],
-      status: "success",
-    },
-    {
-      role: "assistant",
-      message: assistantMessages[1],
-      status: "success",
-    },
-    {
-      role: "user",
-      message: userMessages[1],
-      status: "success",
-    },
-  ];
+export default function Conversation({prompt, messages, isLoading}:ConversationType) {
+  
+
+    
+//     const messages: Array<{
+//     role: "user" | "assistant";
+//     message: React.ReactNode;
+//     status?: "success" | "failed";
+//   }> = [
+//     {
+//       role: "user",
+//       message: userMessages[0],
+//       status: "success",
+//     },
+//     {
+//       role: "assistant",
+//       message: assistantMessages[1],
+//       status: "success",
+//     },
+//     {
+//       role: "user",
+//       message: userMessages[1],
+//       status: "success",
+//     },
+//   ];
 
   return (
     <div className="flex flex-col gap-4 px-1">
+        
       {messages.map(({role, message, status}, index) => (
         <MessageCard
           key={index}
@@ -100,11 +112,23 @@ export default function Conversation() {
           currentAttempt={index === 1 ? 2 : 1}
           message={message}
           messageClassName={role === "user" ? "bg-content3 text-content3-foreground" : ""}
-        //   showFeedback={role === "assistant"}
+            //   showFeedback={role === "assistant"}
           status={status}
           role={role}
         />
       ))}
+
+       {isLoading && 
+            <div className=" w-full flex flex-row-reverse items-center gap-3">
+                <div>
+                    <Skeleton className="flex rounded-full w-12 h-12"/>
+                </div>  
+                <div className="w-full flex flex-col gap-2">
+                    <Skeleton className="h-3 w-3/5 rounded-lg"/>
+                    <Skeleton className="h-3 w-4/5 rounded-lg"/>
+                </div>
+            </div>
+       }
     </div>
   );
 }

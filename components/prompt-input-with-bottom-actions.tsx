@@ -3,19 +3,21 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { Button, Tooltip, ScrollShadow } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
+import { motion } from 'framer-motion';
 
 import {cn} from "../utils/cn";
 
 import PromptInput from "./prompt-input";
-import { CPageState } from "@/app/Cpage";
 
 type PromptInputType = {
   setPrompt: Dispatch<SetStateAction<string>>
   prompt: string
   handleSubmitQuestion: () => void
+  isSumit: boolean
+  isLoading: boolean
 }
 
-export default function Component({setPrompt, prompt, handleSubmitQuestion}:PromptInputType) {
+export default function PromptInputWithBottomActions({setPrompt, prompt, handleSubmitQuestion, isSumit, isLoading}:PromptInputType) {
 
   const ideas = [
     {
@@ -29,27 +31,34 @@ export default function Component({setPrompt, prompt, handleSubmitQuestion}:Prom
     {
       title: "Compare NextUI with other UI libraries",
       description: "be as objective as possible",
-    },
-    {
-      title: "Write a text message to my friend",
-      description: "be polite and friendly",
-    },
+    }
   ];
 
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <ScrollShadow hideScrollBar className="flex flex-nowrap gap-2" orientation="horizontal">
-        <div className="flex gap-2">
-          {ideas.map(({title, description}, index) => (
-            <Button key={index} className="flex h-14 flex-col items-start gap-0" variant="flat">
-              <p>{title}</p>
-              <p className="text-default-500">{description}</p>
-            </Button>
-          ))}
-        </div>
-      </ScrollShadow>
-      <form className="flex w-full flex-col items-start rounded-medium bg-default-100 transition-colors hover:bg-default-200/70">
+      {!isSumit && 
+        <motion.div
+          key="conversation"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+      >
+            <ScrollShadow hideScrollBar className="flex flex-nowrap gap-2" orientation="horizontal">
+              <div className="flex gap-2">
+                {ideas.map(({title, description}, index) => (
+                  <Button key={index} className="flex h-14 flex-col items-start gap-0" variant="flat" onClick={() => setPrompt(title)}>
+                    <p>{title}</p>
+                    <p className="text-default-500">{description}</p>
+                  </Button>
+                ))}
+              </div>
+            </ScrollShadow>
+      </motion.div>
+      }
+
+      <form className=" flex w-full flex-col items-start rounded-medium bg-default-100 transition-colors hover:bg-default-200/70">
         <PromptInput
           classNames={{
             inputWrapper: "!bg-transparent shadow-none",
@@ -67,7 +76,9 @@ export default function Component({setPrompt, prompt, handleSubmitQuestion}:Prom
                   size="sm"
                   variant="solid"
                   onClick={() => handleSubmitQuestion()}
-                >
+                  disabled={isLoading}
+                  className="disabled:!bg-primary/20"
+                  >
                   <Icon
                     className={cn(
                       "[&>path]:stroke-[2px]",
@@ -85,39 +96,11 @@ export default function Component({setPrompt, prompt, handleSubmitQuestion}:Prom
           value={prompt}
           variant="flat"
           onValueChange={setPrompt}
+          disabled={isLoading}
         />
         <div className="flex w-full items-center justify-between  gap-2 overflow-scroll px-4 pb-4">
           <div>
           </div>
-          {/* <div className="flex w-full gap-1 md:gap-3">
-            <Button
-              size="sm"
-              startContent={
-                <Icon className="text-default-500" icon="solar:paperclip-linear" width={18} />
-              }
-              variant="flat"
-            >
-              Attach
-            </Button>
-            <Button
-              size="sm"
-              startContent={
-                <Icon className="text-default-500" icon="solar:soundwave-linear" width={18} />
-              }
-              variant="flat"
-            >
-              Voice Commands
-            </Button>
-            <Button
-              size="sm"
-              startContent={
-                <Icon className="text-default-500" icon="solar:notes-linear" width={18} />
-              }
-              variant="flat"
-            >
-              Templates
-            </Button>
-          </div> */}
           <p className="py-1 text-tiny text-default-400">{prompt.length}/2000</p>
         </div>
       </form>
