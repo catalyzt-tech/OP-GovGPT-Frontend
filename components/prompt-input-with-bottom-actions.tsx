@@ -1,14 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Button, Tooltip, ScrollShadow } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 
 import {cn} from "../utils/cn";
 
 import PromptInput from "./prompt-input";
+import { CPageState } from "@/app/Cpage";
 
-export default function Component() {
+type PromptInputType = {
+  setPrompt: Dispatch<SetStateAction<string>>
+  prompt: string
+  handleSubmitQuestion: () => void
+}
+
+export default function Component({setPrompt, prompt, handleSubmitQuestion}:PromptInputType) {
+
   const ideas = [
     {
       title: "Create a blog post about NextUI",
@@ -28,7 +36,6 @@ export default function Component() {
     },
   ];
 
-  const [prompt, setPrompt] = React.useState<string>("");
 
   return (
     <div className="flex w-full flex-col gap-4">
@@ -59,6 +66,7 @@ export default function Component() {
                   radius="lg"
                   size="sm"
                   variant="solid"
+                  onClick={() => handleSubmitQuestion()}
                 >
                   <Icon
                     className={cn(
@@ -79,7 +87,9 @@ export default function Component() {
           onValueChange={setPrompt}
         />
         <div className="flex w-full items-center justify-between  gap-2 overflow-scroll px-4 pb-4">
-          <div className="flex w-full gap-1 md:gap-3">
+          <div>
+          </div>
+          {/* <div className="flex w-full gap-1 md:gap-3">
             <Button
               size="sm"
               startContent={
@@ -107,7 +117,7 @@ export default function Component() {
             >
               Templates
             </Button>
-          </div>
+          </div> */}
           <p className="py-1 text-tiny text-default-400">{prompt.length}/2000</p>
         </div>
       </form>
