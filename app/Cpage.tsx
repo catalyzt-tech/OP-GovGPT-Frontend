@@ -46,7 +46,7 @@ export default function Cpage({
             setIsLoading(true);
 
             // NOTE: Uncomment this to use the API don't forget to add the correct API endpoint
-            // const data = await axios.post("https://op-gpt-processor.onrender.com/ask", {
+            // const data = await axios.post("/api/ask", {
             //     question: prompt,
 
             // }, {
