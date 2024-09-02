@@ -10,29 +10,32 @@ export default function SidebarHome({
 })  {
 
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
-
-  let chatHistory = [
-    {
-      roomId : "1",
-      question: "Who want to be a billionaire",
-    },
-    {
-      roomId : "2",
-      question: "Who want to be a billionaire",
-    },
-    {
-      roomId : "2",
-      question: "Who want to be a billionaire",
-    },
-    {
-      roomId : "2",
-      question: "Who want to be a billionaire",
-    },
-    {
-      roomId : "2",
-      question: "Who want to be a billionaire",
-    },
-  ]
+  let chatHistory:{
+    roomId:string
+    question:string
+  }[] = []
+  // let chatHistory = [
+  //   {
+  //     roomId : "1",
+  //     question: "Who want to be a billionaire",
+  //   },
+  //   {
+  //     roomId : "2",
+  //     question: "Who want to be a billionaire",
+  //   },
+  //   {
+  //     roomId : "2",
+  //     question: "Who want to be a billionaire",
+  //   },
+  //   {
+  //     roomId : "2",
+  //     question: "Who want to be a billionaire",
+  //   },
+  //   {
+  //     roomId : "2",
+  //     question: "Who want to be a billionaire",
+  //   },
+  // ]
 
   // chatHistory = [...chatHistory, ...chatHistory, ...chatHistory, ...chatHistory, ...chatHistory, ...chatHistory]
 
@@ -110,7 +113,7 @@ export default function SidebarHome({
               <Spacer y={8} />
               <div className="flex flex-col gap-2">
                 <h6 className="text-default-500 text-lg">Recently chat</h6>
-                {chatHistory.length === 0 ? chatHistory.map((item, i) => (
+                {chatHistory.length > 0 ? chatHistory.map((item, i) => (
                   <Link 
                   href={"/"} 
                   className="flex items-center gap-1 text-default-700 hover:text-default-800 hover:underline" 
