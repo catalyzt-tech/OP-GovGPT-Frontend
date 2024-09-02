@@ -18,7 +18,7 @@ export default function SidebarHome({
     },
     {
       roomId : "2",
-      question: "Who want to be a billionaireeeeeeeeeeeee",
+      question: "Who want to be a billionaire",
     },
     {
       roomId : "2",
@@ -34,7 +34,7 @@ export default function SidebarHome({
     },
   ]
 
-  chatHistory = [...chatHistory, ...chatHistory, ...chatHistory, ...chatHistory, ...chatHistory, ...chatHistory]
+  // chatHistory = [...chatHistory, ...chatHistory, ...chatHistory, ...chatHistory, ...chatHistory, ...chatHistory]
 
 
   const handleNewChat = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {

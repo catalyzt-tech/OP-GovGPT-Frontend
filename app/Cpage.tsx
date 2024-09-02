@@ -46,9 +46,13 @@ export default function Cpage({
             setIsLoading(true);
 
             // NOTE: Uncomment this to use the API don't forget to add the correct API endpoint
-            // const data = await axios.post("/api/chat", {
+            // const data = await axios.post("https://op-gpt-processor.onrender.com/ask", {
             //     question: prompt,
+
+            // }, {
+            //     timeout: 80000,
             // })
+
     
             setTimeout(() => {
 
@@ -57,6 +61,7 @@ export default function Cpage({
                     {
                         role: "assistant",
                         message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem cumque nulla itaque amet alias suscipit explicabo cupiditate tenetur labore possimus?",
+                        // message: data.data.result.output,
                     },
                 ]);
                 setIsLoading(false);
