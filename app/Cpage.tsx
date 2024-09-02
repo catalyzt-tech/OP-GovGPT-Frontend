@@ -18,11 +18,7 @@ export type MessageType = {
     status?: "success" | "failed";
 }
 
-export default function Cpage({
-
-}: {
-    
-}) {
+export default function Cpage() {
 
     const [prompt, setPrompt] = useState<string>("");
     const [messages, setMessages] = useState<Array<MessageType>>([]);
@@ -31,7 +27,6 @@ export default function Cpage({
 
     async function handleSendQuestion() {
         setIsSubmit(true)
-        // setIsLoading(true)
         setMessages(prevMessages => [...prevMessages, {
             role: "user",
             message: prompt,
@@ -48,11 +43,9 @@ export default function Cpage({
             // NOTE: Uncomment this to use the API don't forget to add the correct API endpoint
             // const data = await axios.post("/api/ask", {
             //     question: prompt,
-
             // }, {
             //     timeout: 80000,
             // })
-
     
             setTimeout(() => {
 
