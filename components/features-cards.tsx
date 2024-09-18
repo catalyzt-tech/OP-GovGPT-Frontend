@@ -1,40 +1,6 @@
 import React from "react";
-import { Icon } from "@iconify/react";
-
 import FeatureCard from "./feature-card";
-
-const featuresCategories = [
-  {
-    key: "examples",
-    title: "Examples",
-    icon: <Icon icon="solar:mask-happly-linear" width={40} />,
-    descriptions: [
-      "Explain quantum computing in simple terms",
-      "Got any creative ideas for a 10 year old' birthday?",
-      "How do I make an HTTP request in Javascript?",
-    ],
-  },
-  {
-    key: "capabilities",
-    title: "Capabilities",
-    icon: <Icon icon="solar:magic-stick-3-linear" width={40} />,
-    descriptions: [
-      "Remembers what user said earlier in the conversation",
-      "Allows user to provide follow-up corrections",
-      "Trained to decline inappropriate requests",
-    ],
-  },
-  {
-    key: "limitations",
-    title: "Limitations",
-    icon: <Icon icon="solar:shield-warning-outline" width={40} />,
-    descriptions: [
-      "May occasionally generate incorrect information",
-      "May occasionally produce harmful instructions or biased information.",
-      "Limited knowledge of world and events after April 2023",
-    ],
-  },
-];
+import { featuresCategories } from "@/static/feature-categories";
 
 export default function Component() {
   return (
