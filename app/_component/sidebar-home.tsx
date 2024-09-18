@@ -1,42 +1,24 @@
 "use client"
+import { APPLICATION_NAME } from "@/static/topic";
 import { Icon } from "@iconify/react";
-import { Button, Modal, ModalBody, ModalContent, ScrollShadow, Spacer, useDisclosure } from "@nextui-org/react";
+import { Button, Tooltip, Modal, ModalBody, ModalContent, ScrollShadow, Spacer, useDisclosure } from "@nextui-org/react";
 import Link from "next/link";
+import React from "react";
 
-export default function SidebarHome({
-
-}:{
-    
-})  {
+function SidebarHome()  {
 
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   let chatHistory:{
     roomId:string
     question:string
   }[] = []
+  
   // let chatHistory = [
   //   {
   //     roomId : "1",
   //     question: "Who want to be a billionaire",
   //   },
-  //   {
-  //     roomId : "2",
-  //     question: "Who want to be a billionaire",
-  //   },
-  //   {
-  //     roomId : "2",
-  //     question: "Who want to be a billionaire",
-  //   },
-  //   {
-  //     roomId : "2",
-  //     question: "Who want to be a billionaire",
-  //   },
-  //   {
-  //     roomId : "2",
-  //     question: "Who want to be a billionaire",
-  //   },
   // ]
-
   // chatHistory = [...chatHistory, ...chatHistory, ...chatHistory, ...chatHistory, ...chatHistory, ...chatHistory]
 
 
@@ -82,33 +64,20 @@ export default function SidebarHome({
           <ModalBody>
             <div className="relative flex h-full w-72 flex-1 flex-col p-6 overflow-x-hidden">
               <div className="flex items-center gap-2 px-2">
-                <span className="text-small font-bold uppercase text-foreground">OP GPT</span>
+                <span className="text-small font-bold uppercase text-foreground">{APPLICATION_NAME}</span>
               </div>
               <Spacer y={8} />
-              {/* NOTE: if don't want to display the avatar can delete this comment */}
-              {/* 
-                {
-                  key: "projects",
-                  href: "#",
-                  icon: "solar:pen-new-round-linear",
-                  title: "New chat",
-                  endContent: (
-                    <Icon className="text-default-400" icon="solar:add-circle-line-duotone" width={24} />
-                    ),
-                  },
-              */}
-               
                <Link
-                href="/"
-                className="flex justify-between items-center gap-3 p-2 bg-default-100 hover:bg-default-200 rounded-md"
-                onClick={handleNewChat}
-              >
-                <div className="flex gap-2 text-default-700">
-                  <Icon icon={"solar:pen-new-round-linear"} width={24} />
-                  <h6 className="font-normal">New chat</h6>
-                </div>
-                <Icon className="" icon="solar:add-circle-line-duotone" width={24} />
-              </Link>
+                  href="/"
+                  className="flex justify-between items-center gap-3 p-2 bg-default-100 hover:bg-default-200 rounded-md"
+                  onClick={handleNewChat}
+                >
+                  <div className="flex gap-2 text-default-700">
+                    <Icon icon={"solar:pen-new-round-linear"} width={24} />
+                    <h6 className="font-normal">New chat</h6>
+                  </div>
+                  <Icon className="" icon="solar:add-circle-line-duotone" width={24} />
+                </Link>
 
               <Spacer y={8} />
               <div className="flex flex-col gap-2">
@@ -125,7 +94,9 @@ export default function SidebarHome({
                       </p>
                   </Link>
                 )):
-                <h6 className="text-default-400 text-base">No chat history</h6>
+                // NOTE: Chat history is not availble for now
+                // <h6 className="text-default-400 text-base">No chat history</h6>
+                <h6 className="text-default-400 text-base">Chat history not supported yet</h6>
                 }
               </div>
 
@@ -149,7 +120,8 @@ export default function SidebarHome({
                 >
                   Help & Information
                 </Button>
-                <Button
+                {/* NOTE: Uncomment this authentication have been implemented */}
+                {/* <Button
                   className="justify-start text-default-500 data-[hover=true]:text-foreground"
                   startContent={
                     <Icon
@@ -161,15 +133,17 @@ export default function SidebarHome({
                   variant="light"
                 >
                   Log Out
-                </Button>
+                </Button> */}
               </div>
             </div>
           </ModalBody>
         </ModalContent>
       </Modal>
       
-      <div className="w-fit flex-1 flex-col ">
-        <header className="flex items-center gap-3 rounded-medium border-small border-divider p-2">
+      <div className="flex items-center justify-between flex-1 fixed top-0 left-0 z-50 bg-background w-full px-2 py-1">
+
+        {/* COMPONENT: left icon on navbar */}
+        <div className="flex items-center gap-3 p-2">
           <Button isIconOnly size="sm" variant="light" onPress={onOpen}>
             <Icon
               className="text-default-500"
@@ -178,11 +152,32 @@ export default function SidebarHome({
               width={24}
             />
           </Button>
-        </header>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-medium text-default-500">{APPLICATION_NAME}</h3>
+        </div>
      
+          <div className="min-[350px]:block hidden">
+          <Link
+              href="/"
+              className="flex justify-between items-center gap-3 p-2 rounded-md"
+              onClick={handleNewChat}
+            >
+              <Tooltip content="Create new chat">
+                  <Button isIconOnly size="sm" variant="light" >
+                  <Icon icon={"solar:pen-new-round-linear"} className="text-default-500" width={24} />
+                  </Button>
+              </Tooltip>
+            </Link>
+          </div>
+
       </div>
     </div>
 
     )
 
 }
+
+
+export default React.memo(SidebarHome)
