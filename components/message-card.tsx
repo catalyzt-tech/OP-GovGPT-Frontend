@@ -5,6 +5,7 @@ import {Avatar, Badge, Button, Link, Tooltip} from "@nextui-org/react";
 import {useClipboard} from "@nextui-org/use-clipboard";
 import {Icon} from "@iconify/react";
 import { cn } from "@/utils/cn";
+import Markdown from 'react-markdown'
 
 
 export type MessageCardProps = React.HTMLAttributes<HTMLDivElement> & {  avatar?: string;
@@ -19,6 +20,7 @@ export type MessageCardProps = React.HTMLAttributes<HTMLDivElement> & {  avatar?
   onFeedback?: (feedback: "like" | "dislike") => void;
   onAttemptFeedback?: (feedback: "like" | "dislike" | "same") => void;
   role?: "user" | "assistant";
+  links: string[];
 };
 
 const MessageCard = React.forwardRef<HTMLDivElement, MessageCardProps>(
@@ -37,6 +39,7 @@ const MessageCard = React.forwardRef<HTMLDivElement, MessageCardProps>(
       className,
       messageClassName,
       role,
+      links,
       ...props
     },
     ref,
@@ -106,7 +109,7 @@ const MessageCard = React.forwardRef<HTMLDivElement, MessageCardProps>(
 
     return (
       // {role === "assistant" ? because otherwise it will be return a false in className
-      <div {...props} ref={ref} className={cn(`flex gap-3 ${role === "assistant" ? "flex-row-reverse" : ""}`, className)}>
+      <div {...props} ref={ref} className={cn(`flex gap-3 ${role === "assistant" ? "" : "flex-row-reverse"}`, className)}>
         <div className="relative flex-none">
           <Badge
             isOneChar
@@ -127,9 +130,35 @@ const MessageCard = React.forwardRef<HTMLDivElement, MessageCardProps>(
               messageClassName,
             )}
           >
-            <div ref={messageRef} className={"pr-20 text-small"}>
-              {hasFailed ? failedMessage : message}
+            <div ref={messageRef} className={"pr-2 text-small whitespace-pre-wrap"}>
+              {hasFailed ? failedMessage : (() => {
+                if (typeof(message) === "string"){
+                  return <Markdown>{message}</Markdown>
+                } else {
+                  return <p>{message}</p>
+                }
+              })()}
             </div>
+            {links.length > 0 && 
+            <div className="flex flex-col gap-1 text-small pr-2">
+              <hr className="border border-gray-600 my-2"/>
+              <h6 className="text-lg font-medium">
+                Data Reference Sources
+              </h6>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {links.map((link, i) => (
+                  <a
+                  href={link}
+                  key={i}
+                  className="text-small text-blue-500 hover:text-blue-400 hover:underline line-clamp-1"
+                  target="_blank"
+                  >
+                    {link}
+                  </a>
+                ))}
+                </div>
+            </div>
+            }
             
             {showFeedback && !hasFailed && (
               <div className="absolute right-2 top-2 flex rounded-full bg-content2 shadow-small">
