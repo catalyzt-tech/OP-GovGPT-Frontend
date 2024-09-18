@@ -40,7 +40,7 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-        <div className="flex flex-col min-h-screen bg-[#1f1f1d]">
+        <div className="flex flex-col min-h-screen ">
             <main className="w-full h-full">
               {children}
             </main>
