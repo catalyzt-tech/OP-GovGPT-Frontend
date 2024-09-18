@@ -1,0 +1,2 @@
+export const AI_AVATAR_URL = "https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/avatar_ai.png"
+export const USER_AVATAR_URL = "https://d2u8k2ocievbld.cloudfront.net/memojis/male/6.png"
