@@ -1,22 +1,22 @@
 import SidebarHome from "./_component/sidebar-home";
-import { Avatar, Button, ScrollShadow } from "@nextui-org/react";
+import { Avatar } from "@nextui-org/react";
 import { motion, AnimatePresence } from 'framer-motion';
 import FeaturesCards from "../components/features-cards";
 import PromptInputWithBottomActions from "../components/prompt-input-with-bottom-actions";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Footer from "./_component/footer";
 import Conversation from "./_component/conversation";
-import axios from "axios";
+import { MessageType } from "./home-type";
+import { AskQuestion } from "@/api-routes/question";
+import { AI_AVATAR_URL } from "@/static/avatar-image";
+import { APPLICATION_NAME } from "@/static/topic";
+
 
 export type CPageState = {
     submit: boolean
 }
 
-export type MessageType = {
-    role: "user" | "assistant";
-    message: React.ReactNode;
-    status?: "success" | "failed";
-}
+
 
 export default function Cpage() {
 
@@ -25,56 +25,55 @@ export default function Cpage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
-    async function handleSendQuestion() {
+    const handleSendQuestion = useCallback(async() => {
         setIsSubmit(true)
         setMessages(prevMessages => [...prevMessages, {
             role: "user",
             message: prompt,
             status: "success",
+            links:[],
         }])
         setPrompt("")
         await handleFetchAiAPI()
-    }
+    },[prompt])
     
-    async function handleFetchAiAPI() {
+    
+    const handleFetchAiAPI = useCallback(async() => {
         try {
             setIsLoading(true);
 
             // NOTE: Uncomment this to use the API don't forget to add the correct API endpoint
-            // const data = await axios.post("/api/ask", {
-            //     question: prompt,
-            // }, {
-            //     timeout: 80000,
-            // })
-    
+            const {links, result:{output}} = await AskQuestion(prompt)
+            
             setTimeout(() => {
 
                 setMessages(prevMessages => [
                     ...prevMessages,
                     {
+                        message: output,
+                        links: links,
                         role: "assistant",
-                        message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem cumque nulla itaque amet alias suscipit explicabo cupiditate tenetur labore possimus?",
-                        // message: data.data.result.output,
+                        status:"success",
                     },
                 ]);
                 setIsLoading(false);
             }, 5000);
-            // throw new Error("error occurred");
-            
+
         } catch (error) {
-            console.log(error);
+            console.error(error);
             setMessages(prevMessages => [
                 ...prevMessages,
                 {
                     role: "assistant",
                     message: "error occurred",
                     status: "failed",
+                    links: [],
                 },
             ]);
             setIsLoading(false); 
         }
-    }
-
+    },[prompt, handleSendQuestion])
+    
 
     return (
         <div className="flex flex-col min-h-screen h-full">
@@ -96,7 +95,7 @@ export default function Cpage() {
                                 <div className="flex w-full flex-col items-center justify-center gap-2 mb-4">
                                     <Avatar
                                         size="lg"
-                                        src="https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/avatar_ai.png"
+                                        src={AI_AVATAR_URL}
                                     />
                                     <h1 className="text-xl font-medium text-default-700">
                                         How can I help you today?
@@ -115,7 +114,6 @@ export default function Cpage() {
                                 transition={{ duration: 0.5, ease: "easeInOut" }}
                             >
                                 <Conversation 
-                                prompt={prompt}
                                 isLoading={isLoading}
                                 messages={messages}
                                 />
@@ -132,10 +130,9 @@ export default function Cpage() {
                         handleSubmitQuestion={handleSendQuestion}
                         isSumit={isSubmit}
                         isLoading={isLoading}
-                        
                     />
                     <p className="px-2 text-tiny text-default-400">
-                        OP GPT can make mistakes. Consider checking important information.
+                        {APPLICATION_NAME} can make mistakes. Consider checking important information.
                     </p>
                 </div>
             </div>
