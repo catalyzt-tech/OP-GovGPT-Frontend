@@ -152,6 +152,7 @@ const MessageCard = React.forwardRef<HTMLDivElement, MessageCardProps>(
                   key={i}
                   className="text-small text-blue-500 hover:text-blue-400 hover:underline line-clamp-1"
                   target="_blank"
+                  rel="noreferrer"
                   >
                     {link}
                   </a>
